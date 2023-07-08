@@ -1,0 +1,12 @@
+.container{
+    background-color: rgb(135, 91, 135);
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.active{
+    color: yellow;
+}
+
