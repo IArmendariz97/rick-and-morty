@@ -12,7 +12,7 @@ export default function Card({
   image,
   id,
 }) {
-  //   console.log(props, "props"); cardInfo
+  console.log(image, "props"); //cardInfo
 
   return (
     <div className={style.cardContainer}>

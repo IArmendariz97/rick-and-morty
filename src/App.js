@@ -12,9 +12,6 @@ function App() {
     axios(`https://rickandmortyapi.com/api/character/${dato}`)
       .then((respuesta) => {
         if (respuesta.data.name) {
-          // antes de agregar busco si "ya existe". Como lo harias?
-          // tu codigo aquí:
-          // if("yaExiste") return
           setCharacters((oldChars) => [...oldChars, respuesta.data]);
         } else {
         }
@@ -45,13 +42,16 @@ function App() {
       <Nav onSearch={onSearch} />
       <Routes>
         {/* <Route path="*" element={<Nav onSearch={onSearch} />} /> */}
-        <Route path="/" element={<h1>Welcome</h1>} />
+        <Route path="/" element={<h1 className="App-title">Welcome</h1>} />
         <Route
           path="/home"
           element={<Cards characters={characters} onClose={onClose} />}
         />
-        <Route path="/about" element={<h1>Soy el about</h1>} />
-        <Route path="/character/:id" element={<Detail />} />
+        <Route
+          path="/about"
+          element={<h1 className="App-subtitle">Soy el about</h1>}
+        />
+        <Route path="/detail/:id" element={<Detail />} />
       </Routes>
     </div>
   );
