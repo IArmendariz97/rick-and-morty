@@ -6,14 +6,17 @@
 }
 
 h3 {
+  margin-top: 5px;
   font-size: 24px;
   margin-bottom: 10px;
+  color: #9000ff;
 }
 
 h5 {
   font-size: 16px;
   color: #888888;
   margin-bottom: 10px;
+  color: #9000ff;
 }
 
 img {
@@ -33,4 +36,6 @@ section {
 span {
   margin-right: 10px;
   font-size: 18px;
+  font-weight: bold;
+  color: #9000ff;
 }

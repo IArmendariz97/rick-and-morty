@@ -11,7 +11,7 @@ export default function Detail() {
   const [pjDetail, setPjDetail] = useState({});
 
   useEffect(() => {
-    axios(`https://rickandmortyapi.com/api/character/${id}`)
+    axios(`http://localhost:3001/rickandmorty/detail/${id}`)
       .then(({ data }) => {
         if (data.name) {
           // algo
@@ -35,8 +35,8 @@ export default function Detail() {
       <h5>{pjDetail.status ? pjDetail.status : ":( no hay status"}</h5>
       <img src={pjDetail.image} alt={pjDetail.name} />
       <section>
-        <span>🐞{pjDetail.species}</span>
-        <span> ♀ {pjDetail.gender}</span>
+        <span>👤{pjDetail.species}</span>
+        <span> {pjDetail.gender === "Male" ? "♂ Male" : "♀ Female"}</span>
         <span>🌍 {pjDetail.origin?.name}</span>
       </section>
     </div>

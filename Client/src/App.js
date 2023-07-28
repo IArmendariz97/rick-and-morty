@@ -30,15 +30,16 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [access]);
 
+  const [characters, setCharacters] = useState([]); // [{}]
   function onSearch(dato) {
     // agrega personajes a characters
-    axios(`https://rickandmortyapi.com/api/character/${dato}`)
-      .then((respuesta) => {
-        if (respuesta.data.name) {
+    axios(`http://localhost:3001/rickandmorty/onsearch/${dato}`)
+      .then((character) => {
+        if (character.data.name) {
           // antes de agregar busco si "ya existe". Como lo harias?
           // tu codigo aquí:
           // if("yaExiste") return
-          setCharacters((oldChars) => [...oldChars, respuesta.data]);
+          setCharacters((oldChars) => [...oldChars, character.data]);
         } else {
         }
       })
@@ -54,8 +55,6 @@ function App() {
       })
     );
   }
-
-  const [characters, setCharacters] = useState([]); // [{}]
 
   const location = useLocation();
 
