@@ -19,25 +19,20 @@ export default function Card({
 
   const dispatch = useDispatch(); // CREO UN DISPATCH
   const favorites = useSelector((state) => state.favorites); // ME TRAIGO "favorites" DEL GLOBAL
+  const user = useSelector((state) => state.user);
 
   const [isFav, setIsFav] = useState(false);
-
+  const userId = user?.id;
   function handleClick() {
     //despachar el objeto de la accion
     if (isFav) {
       setIsFav(false);
-      dispatch(deleteFavorite(id));
+      dispatch(deleteFavorite({ userId, id }));
     } else {
       setIsFav(true);
       dispatch(
         addFavorite({
-          name,
-          species,
-          onClose,
-          gender,
-          status,
-          origin,
-          image,
+          userId,
           id,
         })
       );
@@ -66,7 +61,7 @@ export default function Card({
       <h2 className={style.cardInfo}>{gender}</h2>
       <h2 className={style.cardInfo}>{status}</h2>
       <h2 className={style.cardInfo}>{origin}</h2>
-      <Link to={`/detail/${id}`}>
+      <Link to={`/character/${id}`}>
         <img className={style.cardImage} src={image} alt={name} />
       </Link>
       {isFav ? (

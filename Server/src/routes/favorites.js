@@ -7,8 +7,8 @@ const {
 
 const favoriteRouter = express.Router();
 
-favoriteRouter.get("/", getFav);
+favoriteRouter.get("/:userId", getFav);
 favoriteRouter.post("/", postFav);
-favoriteRouter.delete("/:id", deleteFav);
+favoriteRouter.delete("/:userId/:characterId", deleteFav);
 
 module.exports = favoriteRouter;

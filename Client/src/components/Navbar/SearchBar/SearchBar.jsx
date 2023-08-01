@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import style from "./SearchBar.module.css";
 
 export default function SearchBar(props) {
-  
+  console.log(props);
   const [id, setId] = useState("");
 
   const handleChange = (evento) => {

@@ -4,6 +4,8 @@ import {
   FILTER,
   ORDER,
   RESET,
+  SET_USER,
+  SET_FAVORITES,
 } from "../actions/types";
 
 const initialGlobalState = {
@@ -12,22 +14,34 @@ const initialGlobalState = {
   access: false,
   aunMas: [],
   detail: {},
+  user: null,
 };
 
 export default function rootReducer(state = initialGlobalState, action) {
   // Nos fijabamos por el TYPE de la accion
   switch (action.type) {
     case ADDFAVORITE:
-      const addPJ = [...state.allCharacters, action.payload];
-      return { ...state, favorites: addPJ, allCharacters: [...addPJ] };
+      return {
+        ...state,
+        favorites: action.payload,
+        allCharacters: action.payload,
+      };
 
     case DELETEFAVORITE:
       return {
         ...state,
-        favorites: state.favorites.filter((fav) => fav.id !== action.payload),
-        allCharacters: state.allCharacters.filter(
-          (fav) => fav.id !== action.payload
-        ),
+        favorites: action.payload,
+        allCharacters: action.payload,
+      };
+    case SET_FAVORITES:
+      return {
+        ...state,
+        favorites: action.payload,
+      };
+    case SET_USER:
+      return {
+        ...state,
+        user: action.payload,
       };
 
     case FILTER:

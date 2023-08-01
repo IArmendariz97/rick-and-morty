@@ -8,20 +8,44 @@ import Detail from "./components/Detail/Detail";
 import axios from "axios";
 import style from "./App.module.css";
 import Favorites from "./components/Favorites/Favorites";
+import { setUser, setFavorites } from "./redux/actions/actions";
+import { useDispatch } from "react-redux";
 
 function App() {
   const navigate = useNavigate(); // Importar useNavigate !!!!!
   const [access, setAccess] = React.useState(false);
-  const EMAIL = "iniakitoo@gmail.com";
-  const PASSWORD = "123456";
+  const [errorApi, seterrorApi] = React.useState(false);
+
+  const dispatch = useDispatch();
 
   function logout() {
     setAccess(false);
+    navigate("/");
   }
-  function login(userData) {
-    if (userData.password === PASSWORD && userData.email === EMAIL) {
-      setAccess(true);
-      navigate("/home");
+
+  async function login(userData) {
+    const { email, password } = userData;
+    const URL = "http://localhost:3001/user/login/";
+
+    try {
+      const backendlogin = await axios(
+        URL + `?email=${email}&password=${password}`
+      );
+      const { data } = backendlogin;
+      console.log(data);
+      const { access, user } = data;
+      if (access) {
+        const response = await axios(`
+        http://localhost:3001/favorites/${user.id}`);
+        dispatch(setUser(user));
+        navigate("/home");
+        const favorites = response.data;
+        dispatch(setFavorites(favorites));
+      } else {
+        alert("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      alert(error.message);
     }
   }
 
@@ -31,19 +55,33 @@ function App() {
   }, [access]);
 
   const [characters, setCharacters] = useState([]); // [{}]
-  function onSearch(dato) {
+  async function onSearch(dato) {
     // agrega personajes a characters
-    axios(`http://localhost:3001/rickandmorty/onsearch/${dato}`)
-      .then((character) => {
-        if (character.data.name) {
-          // antes de agregar busco si "ya existe". Como lo harias?
-          // tu codigo aquí:
-          // if("yaExiste") return
-          setCharacters((oldChars) => [...oldChars, character.data]);
-        } else {
-        }
-      })
-      .catch((err) => alert(err.response.data.error));
+    // axios(`http://localhost:3001/rickandmorty/onsearch/${dato}`)
+    //   .then((character) => {
+    //     if (character.data.name) {
+    //       // antes de agregar busco si "ya existe". Como lo harias?
+    //       // tu codigo aquí:
+    //       // if("yaExiste") return
+    //       setCharacters((oldChars) => [...oldChars, character.data]);
+    //     } else {
+    //     }
+    //   })
+    //   .catch((err) => alert(err.response.data.error));
+    try {
+      const backRequest = await axios(
+        `http://localhost:3001/character/${dato}`
+      );
+
+      if (backRequest.status === 200) {
+        seterrorApi(false);
+        setCharacters((oldChars) => [...oldChars, backRequest.data]);
+      } else {
+        seterrorApi(true);
+      }
+    } catch (error) {
+      seterrorApi(true);
+    }
   }
 
   function onClose(id) {
@@ -64,10 +102,16 @@ function App() {
       <Routes>
         <Route
           path="/home"
-          element={<Home characters={characters} onClose={onClose} />}
+          element={
+            !errorApi ? (
+              <Home characters={characters} onClose={onClose} />
+            ) : (
+              <h1>Componente de error 404</h1>
+            )
+          }
         />
         <Route path="/about" element={<About />} />
-        <Route path="/detail/:id" element={<Detail />} />
+        <Route path="/character/:id" element={<Detail />} />
         <Route path="/" element={<Form login={login} />} />
         <Route path="/favorites" element={<Favorites />} />
       </Routes>

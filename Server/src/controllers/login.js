@@ -1,19 +1,31 @@
-const allowedUsers = require("../utils/allowedUsers");
 const { User } = require("../DB");
 const { Op } = require("sequelize");
 
-function login(req, res) {
+async function login(req, res) {
   const { email, password } = req.query;
   let access = false;
+  let user = null;
 
-  allowedUsers.forEach((user) => {
-    if (user.email === email && user.password === password) {
+  try {
+    const foundUser = await User.findOne({
+      where: {
+        email,
+        password,
+      },
+    });
+
+    if (foundUser) {
       access = true;
+      user = foundUser;
     }
-  });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error." });
+  }
 
-  return res.json({ access }); // {access: true}
+  return res.json({ access, user });
 }
+
+// Resto del código del controlador...
 
 async function createUser(obj) {
   try {

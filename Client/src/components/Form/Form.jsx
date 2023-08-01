@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import style from "./Form.module.css";
 
 export default function Form(props) {
+  console.log(props);
   const [userData, setUserData] = useState({
     username: "",
     email: "",

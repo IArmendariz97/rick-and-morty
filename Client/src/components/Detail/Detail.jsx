@@ -6,28 +6,26 @@ import axios from "axios";
 //"/detail/:id" --> 55
 
 export default function Detail() {
-  const { id } = useParams(); // {id: 300}
-
+  const { id } = useParams();
   const [pjDetail, setPjDetail] = useState({});
 
   useEffect(() => {
-    axios(`http://localhost:3001/rickandmorty/detail/${id}`)
-      .then(({ data }) => {
+    const fetchData = async () => {
+      try {
+        const response = await axios(`http://localhost:3001/character/${id}`);
+        const { data } = response;
         if (data.name) {
-          // algo
           setPjDetail(data);
         } else {
           window.alert("No hay personajes con ese ID");
         }
-      })
-      .catch((err) => window.alert("Error"));
-
-    // desmontaje
-    return () => {
-      // ejecutar cuando se desmonte
-      console.log("me desmonto adios");
+      } catch (error) {
+        window.alert("Error al obtener los datos");
+      }
     };
-  });
+
+    fetchData();
+  }, [id]);
 
   return (
     <div className={style.container}>
